@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from basicapp.models import Lobo, User
 from django.db import models
 from django.utils import timezone
-from django.core.mail import send_mail
+from django.shortcuts import redirect
 
 # Create your views here
 title = """
@@ -67,6 +67,8 @@ def index(request):
             reportedLobo.claimed_by = request.POST["claim"]
             reportedLobo.claim_time = timezone.now()
             reportedLobo.save()
+        redirect("/home")
+        
     report = """
     <form method="POST">
         <input type="text" name="location" placeholder="location">
@@ -95,51 +97,4 @@ def index(request):
         """)
     return HttpResponse(page)
 
-@csrf_exempt
-def signup(request):
-    global emailsender
-    page = ""
-    if(request.method == "POST"):
-        if request.POST["Name"] == "":
-            page = template("""
-                <p> Name empty. Retry.</p>
-                Name:
-                <input type="text" name="Name" placeholder="Name">
-                Email:
-                <input type="text" name="Email" placeholder="Email Address">
-                <input type="submit">
-            """)
-            return HttpResponse(page)
-        if request.POST["Email"] == "":
-            page = template("""
-                <p> Email empty. Retry.</p>
-                Name:
-                <input type="text" name="Name" placeholder="Name">
-                Email:
-                <input type="text" name="Email" placeholder="Email Address">
-                <input type="submit">
-            """)
-            return HttpResponse(page)
-        newUser = User(name=request.POST["Name"], email = request.POST["Email"])
-        page = template(f"<h1> {title} </h1> <p> Check Email. Sent to: {newUser.email} </p>")
-        send_mail(
-            "Signed Up for WheresLobo",
-            "Successful signup",
-            emailsender,
-            [newUser.email],
-            fail_silently=False,
-        )
-        newUser.save()
-        return HttpResponse(page)
-    page = template(f"""
-        <h1> {title} </h1>
-        <form method="POST">
-            Name:
-            <input type="text" name="Name" placeholder="Name">
-            email:
-            <input type="text" name="Email" placeholder="email address">
-            <input type="submit">
-        </form>
-    """)
-    return HttpResponse(page)
     
