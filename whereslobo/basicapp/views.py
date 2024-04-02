@@ -53,7 +53,7 @@ def index(request):
         location = ""
         claimname = ""
         is_claimed = False
-        if "location" in request.POST:
+        if "location" in request.POST and request.POST["location"] != "":
             location = request.POST["location"]
             if "claim" in request.POST:
                 claimname = request.POST["claim"]
@@ -62,7 +62,7 @@ def index(request):
                 is_claimed = False
             reportedLobo = Lobo(location = location, time_seen = timezone.now(), is_claimed = is_claimed, claimed_by = claimname, claim_time = timezone.now())
             reportedLobo.save()
-        elif "claim" in request.POST:
+        elif "claim" in request.POST and request.POST["claim"] != "":
             reportedLobo.is_claimed = True
             reportedLobo.claimed_by = request.POST["claim"]
             reportedLobo.claim_time = timezone.now()
