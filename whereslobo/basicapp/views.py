@@ -68,7 +68,6 @@ def index(request):
             reportedLobo.claim_time = timezone.now()
             reportedLobo.save()
         redirect("/home")
-        
     report = """
     <form method="POST">
         <input type="text" name="location" placeholder="location">
