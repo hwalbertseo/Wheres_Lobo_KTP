@@ -91,6 +91,7 @@ def index(request):
         <form method="POST">
             <input type="submit">
         </form>
+        Made by Albert Seo at 4/1/2024, time 9:00 pm
         """)
     return HttpResponse(page)
 
