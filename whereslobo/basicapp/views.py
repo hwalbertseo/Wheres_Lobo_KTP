@@ -60,13 +60,11 @@ def index(request):
                 is_claimed = True
             else:
                 is_claimed = False
-            reportedLobo = Lobo(location = location, time_seen = timezone.now(), is_claimed = is_claimed, claimed_by = claimname, claim_time = timezone.now())
-            reportedLobo.save()
         elif "claim" in request.POST and request.POST["claim"] != "":
-            reportedLobo.is_claimed = True
-            reportedLobo.claimed_by = request.POST["claim"]
-            reportedLobo.claim_time = timezone.now()
-            reportedLobo.save()
+            is_claimed = True
+            claimname = request.POST["claim"]
+        reportedLobo = Lobo(location = location, time_seen = timezone.now(), is_claimed = is_claimed, claimed_by = claimname, claim_time = timezone.now())
+        reportedLobo.save()
         redirect("/home")
     report = """
     <form method="POST">
