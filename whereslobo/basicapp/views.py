@@ -42,8 +42,8 @@ def index(request):
     global title
     reportedLobo = Lobo.objects.last()
     if(request.method == "POST"):
-        location = reportedLobo.location
-        claimname = reportedLobo.claimed_by
+        location = ""
+        claimname = ""
         is_claimed = False
         if "location" in request.POST and request.POST["location"] != "":
             location = request.POST["location"]
@@ -54,6 +54,7 @@ def index(request):
                 is_claimed = False
         elif "claim" in request.POST and request.POST["claim"] != "":
             is_claimed = True
+            location = reportedLobo.location
             claimname = request.POST["claim"]
         if claimname == "":
             is_claimed = False
