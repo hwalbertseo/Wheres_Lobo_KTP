@@ -10,8 +10,6 @@ title = """
 <a href="/home"> Where's Lobo? </a>
 """
 
-emailsender = "albertseo@uchicago.edu"
-
 def template(content):
     return f"""
     <html>
@@ -58,7 +56,7 @@ def index(request):
             claimname = request.POST["claim"]
         if claimname == "":
             is_claimed = False
-        if reportedLobo.location != location:
+        if reportedLobo.location != location and location != "":
             reportedLobo = Lobo(location = location, time_seen = timezone.now(), is_claimed = is_claimed, claimed_by = claimname, claim_time = timezone.now())
             reportedLobo.save()
         redirect("/home")
