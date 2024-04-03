@@ -23,8 +23,6 @@ def template(content):
     
 def checkSeen(thisLobo):
     if thisLobo is None:
-        reportedLobo = Lobo(location = "", time_seen = timezone.now(), is_claimed = False, claimed_by = "", claim_time = timezone.now())
-        reportedLobo.save()
         return "He was not seen..."
     if thisLobo.location != "":
         checktime = thisLobo.time_seen.strftime("%Y-%m-%d %I:%M %p")
@@ -34,9 +32,9 @@ def checkSeen(thisLobo):
 def checkClaim(thisLobo):
     if thisLobo is None:
         return "He's not claimed yet."
-    if thisLobo.is_claimed:
+    if thisLobo.is_claimed and thisLobo.claimed_by != "":
         checktime = thisLobo.claim_time.strftime("%Y-%m-%d %I:%M %p")
-        return f"He was claimed at {checktime}"
+        return f"He was claimed at {checktime} by {thisLobo.claimed_by}"
     return "He's not claimed yet."
 
 @csrf_exempt
@@ -50,8 +48,8 @@ def index(request):
         mydata = Lobo.objects.all()
     reportedLobo = mydata.last()
     if(request.method == "POST"):
-        location = ""
-        claimname = ""
+        location = reportedLobo.location
+        claimname = reportedLobo.claimed_by
         is_claimed = False
         if "location" in request.POST and request.POST["location"] != "":
             location = request.POST["location"]
@@ -69,15 +67,14 @@ def index(request):
     report = """
     <form method="POST">
         <input type="text" name="location" placeholder="location">
-    </form>
-    """
-    claim = """
-    <form method="POST">
+        <p> Enter name to claim: </p>
         <input type="text" name="claim" placeholder="name">
+        <p> <input type="submit"> </p>
     </form>
     """
     page = template(f"""
         <h1> {title} </h1>
+        Current time: {timezone.now().strftime("%Y-%m-%d %I:%M %p") }
         <h3> {checkSeen(reportedLobo)}
         </h3>
         <h3> Claimed?
@@ -86,12 +83,8 @@ def index(request):
         <h3>
         Seen him? Where? 
         {report}
-        Enter name to claim: {claim}
         </h3>
-        <form method="POST">
-            <input type="submit">
-        </form>
-        Made by Albert Seo at 4/1/2024, time 9:00 pm
+        Last updated at 4/3/24, 12:04.
         """)
     return HttpResponse(page)
 
