@@ -40,12 +40,6 @@ def checkClaim(thisLobo):
 @csrf_exempt
 def index(request):
     global title
-    global emailsender
-    mydata = Lobo.objects.all()
-    if(mydata is None):
-        reportedLobo = Lobo(location = "", time_seen = timezone.now(), is_claimed = False, claimed_by = "", claim_time = timezone.now())
-        reportedLobo.save()
-        mydata = Lobo.objects.all()
     reportedLobo = Lobo.objects.last()
     if(request.method == "POST"):
         location = reportedLobo.location
@@ -93,7 +87,7 @@ def index(request):
             <li>If you found him AND claimed him, enter both fields.</li>
         </ol>
         <p> Then press enter! </p>
-        Last updated at 4/3/24, 12:04.
+        Last updated at 4/3/24, 3:35 PM.
         """)
     return HttpResponse(page)
 
