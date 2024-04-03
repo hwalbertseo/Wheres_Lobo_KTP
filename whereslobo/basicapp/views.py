@@ -28,7 +28,7 @@ def checkSeen(thisLobo):
     return "He was not seen..."
 
 def checkClaim(thisLobo):
-    return "Test"
+    return thisLobo.is_claimed
     if thisLobo.is_claimed == False:
         return "He's not claimed yet"
     if thisLobo is None or thisLobo.is_claimed == False or thisLobo.claimed_by == "":
