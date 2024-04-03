@@ -84,6 +84,13 @@ def index(request):
         Seen him? Where? 
         {report}
         </h3>
+        <p> Directions: You may leave either of the fields blank! </p>
+        <ol>
+            <li>If you see him, enter the first field.</li>
+            <li>If you want to claim the badge at his location, enter the second field.</li>
+            <li>If you found him AND claimed him, enter both fields.</li>
+        </ol>
+        <p> Then press enter! </p>
         Last updated at 4/3/24, 12:04.
         """)
     return HttpResponse(page)
