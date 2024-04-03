@@ -30,7 +30,7 @@ def checkSeen(thisLobo):
     return "He was not seen..."
 
 def checkClaim(thisLobo):
-    if thisLobo is None:
+    if thisLobo is None or not thisLobo.is_claimed:
         return "He's not claimed yet."
     if thisLobo.is_claimed and thisLobo.claimed_by != "":
         checktime = thisLobo.claim_time.strftime("%Y-%m-%d %I:%M %p")
@@ -61,6 +61,8 @@ def index(request):
         elif "claim" in request.POST and request.POST["claim"] != "":
             is_claimed = True
             claimname = request.POST["claim"]
+        if claimname == "":
+            is_claimed = False
         reportedLobo = Lobo(location = location, time_seen = timezone.now(), is_claimed = is_claimed, claimed_by = claimname, claim_time = timezone.now())
         reportedLobo.save()
         redirect("/home")
