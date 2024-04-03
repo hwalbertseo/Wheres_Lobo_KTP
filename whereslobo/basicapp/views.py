@@ -32,7 +32,7 @@ def checkSeen(thisLobo):
 def checkClaim(thisLobo):
     if thisLobo is None or not thisLobo.is_claimed:
         return "He's not claimed yet."
-    if thisLobo.is_claimed and thisLobo.claimed_by != "":
+    if thisLobo.is_claimed or thisLobo.claimed_by != "":
         checktime = thisLobo.claim_time.strftime("%Y-%m-%d %I:%M %p")
         return f"He was claimed at {checktime} by {thisLobo.claimed_by}"
     return "He's not claimed yet."
