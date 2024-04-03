@@ -30,9 +30,9 @@ def checkSeen(thisLobo):
     return "He was not seen..."
 
 def checkClaim(thisLobo):
-    if thisLobo is None or not thisLobo.is_claimed:
+    if thisLobo is None or thisLobo.is_claimed == False or thisLobo.claimed_by == "":
         return "He's not claimed yet."
-    if thisLobo.is_claimed or thisLobo.claimed_by != "":
+    if thisLobo.is_claimed and thisLobo.claimed_by != "":
         checktime = thisLobo.claim_time.strftime("%Y-%m-%d %I:%M %p")
         return f"He was claimed at {checktime} by {thisLobo.claimed_by}"
     return "He's not claimed yet."
@@ -71,10 +71,10 @@ def index(request):
     page = template(f"""
         <h1> {title} </h1>
         Current time: {timezone.now().strftime("%Y-%m-%d %I:%M %p") }
-        <h3> {checkSeen(reportedLobo)}
+        <h3> {checkSeen(Lobo.objects.last())}
         </h3>
         <h3> Claimed?
-        {checkClaim(reportedLobo)}!
+        {checkClaim(Lobo.objects.last())}!
         </h3>
         <h3>
         Seen him? Where? 
