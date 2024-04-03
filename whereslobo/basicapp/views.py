@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from basicapp.models import Lobo, User
+from basicapp.models import Lobo
 from django.db import models
 from django.utils import timezone
 from django.shortcuts import redirect
@@ -46,7 +46,7 @@ def index(request):
         reportedLobo = Lobo(location = "", time_seen = timezone.now(), is_claimed = False, claimed_by = "", claim_time = timezone.now())
         reportedLobo.save()
         mydata = Lobo.objects.all()
-    reportedLobo = mydata.last()
+    reportedLobo = Lobo.objects.last()
     if(request.method == "POST"):
         location = reportedLobo.location
         claimname = reportedLobo.claimed_by
